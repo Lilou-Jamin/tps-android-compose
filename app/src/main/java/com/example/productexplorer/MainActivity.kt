@@ -75,15 +75,9 @@ fun ProductDetailScreen(
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         )
+
         ProductRating(
             rating = product.rating,
-            modifier = Modifier.padding(top = 16.dp)
-        )
-        Button(onClick = onAddToCartClick) {
-            Text(text = "Ajouter au panier")
-        }
-        ProductDescription(
-            description = product.description,
             modifier = Modifier.padding(top = 16.dp)
         )
         ProductAvailabilityCard(
@@ -93,8 +87,19 @@ fun ProductDetailScreen(
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         )
+
+        ProductDescription(
+            description = product.description,
+            modifier = Modifier.padding(top = 16.dp)
+        )
         ProductWarrantyField(
             warrantyInformation = product.warrantyInformation,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        )
+        AddToCartButton(
+            onClick = onAddToCartClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
@@ -273,4 +278,44 @@ fun ProductWarrantyField(
         },
         modifier = modifier
     )
+}
+
+@Composable
+fun AddToCartButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier
+    ) {
+        Text(text = "Ajouter au panier")
+    }
+}
+
+fun sampleProductOutOfStock(): ProductUi {
+    return ProductUi(
+        title = "Casque Audio Pulse",
+        brand = "SoundPeak",
+        category = "Audio",
+        description = "Un casque confortable conçu pour écouter de la musique, " +
+                "suivre des cours en ligne et travailler dans de bonnes conditions.",
+        price = 129.99,
+        discountPercentage = 8.0,
+        rating = 4.2,
+        stock = 0,
+        warrantyInformation = "Garantie constructeur : 1 an",
+        shippingInformation = "Produit temporairement indisponible"
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ProductDetailScreenOutOfStockPreview() {
+    ProductExplorerTheme {
+        ProductDetailScreen(
+            product = sampleProductOutOfStock(),
+            onAddToCartClick = {}
+        )
+    }
 }
