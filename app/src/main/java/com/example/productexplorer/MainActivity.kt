@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.productexplorer.ui.theme.ProductExplorerTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.OutlinedTextField
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -78,10 +79,26 @@ fun ProductDetailScreen(
             rating = product.rating,
             modifier = Modifier.padding(top = 16.dp)
         )
-        Text(text = product.description)
         Button(onClick = onAddToCartClick) {
             Text(text = "Ajouter au panier")
         }
+        ProductDescription(
+            description = product.description,
+            modifier = Modifier.padding(top = 16.dp)
+        )
+        ProductAvailabilityCard(
+            stock = product.stock,
+            shippingInformation = product.shippingInformation,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        )
+        ProductWarrantyField(
+            warrantyInformation = product.warrantyInformation,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp)
+        )
     }
 }
 
@@ -196,4 +213,64 @@ fun ProductRating(
             modifier = Modifier.padding(start = 8.dp)
         )
     }
+}
+
+@Composable
+fun ProductAvailabilityCard(
+    stock: Int,
+    shippingInformation: String,
+    modifier: Modifier = Modifier
+) {
+    Card(modifier = modifier) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(
+                text = "Disponibilité",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = "Stock : $stock unités",
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = shippingInformation,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun ProductDescription(
+    description: String,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier) {
+        Text(
+            text = "Description",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+    }
+}
+
+@Composable
+fun ProductWarrantyField(
+    warrantyInformation: String,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = warrantyInformation,
+        onValueChange = {},
+        readOnly = true,
+        label = {
+            Text(text = "Garantie")
+        },
+        modifier = modifier
+    )
 }
