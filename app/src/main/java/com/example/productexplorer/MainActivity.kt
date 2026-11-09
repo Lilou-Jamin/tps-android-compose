@@ -5,14 +5,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
@@ -38,9 +41,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProductExplorerTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    ProductHomeScreen(
-                        featuredProduct = sampleProduct(),
-                        onFeaturedProductClick = {
+                    ProductCatalogScreen(
+                        products = sampleProducts(),
+                        onProductClick = {
                             // Plus tard : ouvrir le détail du produit
                         },
                         modifier = Modifier.padding(innerPadding)
@@ -52,6 +55,7 @@ class MainActivity : ComponentActivity() {
 }
 
 data class ProductUi(
+    val id: Int,
     val title: String,
     val brand: String,
     val category: String,
@@ -66,6 +70,7 @@ data class ProductUi(
 
 fun sampleProduct(): ProductUi {
     return ProductUi(
+        id = 1,
         title = "Smartphone Toto X",
         brand = "TotoTech",
         category = "Smartphones",
@@ -81,6 +86,7 @@ fun sampleProduct(): ProductUi {
 
 fun sampleProductOutOfStock(): ProductUi {
     return ProductUi(
+        id = 2,
         title = "Casque Audio Pulse",
         brand = "SoundPeak",
         category = "Audio",
@@ -297,9 +303,6 @@ fun DailyOfferBox(
         }
     }
 }
-
-
-/* ############### TP4 ################ */
 
 @Composable
 fun ProductDetailScreen(
@@ -544,5 +547,72 @@ fun ProductHomeScreenPreview() {
             featuredProduct = sampleProduct(),
             onFeaturedProductClick = {}
         )
+    }
+}
+
+fun sampleProducts(): List<ProductUi> {
+    return listOf(
+        sampleProduct(),
+        ProductUi(
+            id = 2,
+            title = "Casque Audio Pulse",
+            brand = "SoundPeak",
+            category = "Audio",
+            description = "Un casque confortable pour écouter de la musique et travailler dans de bonnes conditions.",
+            price = 129.99,
+            discountPercentage = 8.0,
+            rating = 4.2,
+            stock = 0,
+            warrantyInformation = "Garantie constructeur : 1 an",
+            shippingInformation = "Produit temporairement indisponible"
+        ),
+        ProductUi(
+            id = 3,
+            title = "Montre Connectée FitTime",
+            brand = "FitTime",
+            category = "Wearables",
+            description = "Une montre connectée simple pour suivre l’activité quotidienne.",
+            price = 89.99,
+            discountPercentage = 15.0,
+            rating = 4.4,
+            stock = 18,
+            warrantyInformation = "Garantie constructeur : 2 ans",
+            shippingInformation = "Livraison estimée : 2 à 4 jours ouvrés"
+        ),
+        ProductUi(
+            id = 4,
+            title = "Enceinte Mini Boom",
+            brand = "BoomSound",
+            category = "Audio",
+            description = "Une enceinte compacte pour écouter de la musique à la maison ou en déplacement.",
+            price = 59.99,
+            discountPercentage = 5.0,
+            rating = 4.1,
+            stock = 52,
+            warrantyInformation = "Garantie constructeur : 1 an",
+            shippingInformation = "Livraison estimée : 3 jours ouvrés"
+        )
+    )
+}
+
+@Composable
+fun ProductCatalogScreen(
+    products: List<ProductUi>,
+    onProductClick: (ProductUi) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(16.dp),
+        // Ajoute une marge intérieure autour du contenu de la liste
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+        // Ajoute un espace vertical entre les éléments de la liste.
+    ) {
+        item {
+            Text(
+                text = "Catalogue produits",
+                style = MaterialTheme.typography.headlineMedium
+            )
+        }
     }
 }
